@@ -69,3 +69,5 @@ geoip-backup-20251203.tar.gz
 ```bash
 find /var/db/geoip-database-backup-* -maxdepth 0 -type d -exec rm -rf {} \;
 ```
+
+📦 **Исходная база данных:** [MaxMind GeoLite2 Country Database](https://github.com/P3TERX/GeoLite.mmdb/)
