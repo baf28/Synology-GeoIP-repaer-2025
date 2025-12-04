@@ -67,5 +67,5 @@ geoip-backup-20251203.tar.gz
 4. **Удалите старые резервные копии** (старше 30 дней)  
 
 ```bash
-find /var/db/geoip-database-backup-* -maxdepth 0 -type d -mtime +30 -exec rm -rf {} \;
+find /var/db/geoip-database-backup-* -maxdepth 0 -type d -exec rm -rf {} \;
 ```
