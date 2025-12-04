@@ -2,10 +2,6 @@
 
 Synology GeoIP Repair Script
 
-https://img.shields.io/badge/version-2025-blue
-https://img.shields.io/badge/platform-Synology%2520DSM-orange
-https://img.shields.io/badge/license-MIT-green
-
 Автоматический скрипт для восстановления GeoIP базы в файрволе Synology DSM после сбоя на серверах обновлений.
 
 🚨 КРИТИЧЕСКОЕ ПРЕДУПРЕЖДЕНИЕ
