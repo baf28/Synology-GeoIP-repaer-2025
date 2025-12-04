@@ -42,8 +42,21 @@ cp -r "$TEMP_DIR"/geoip-database/* /var/db/geoip-database/
 
 # Права доступа
 echo "Настраиваю права..."
-chown -R root:root /var/db/geoip-database/
-chmod -R 755 /var/db/geoip-database/
+# Права для файла GeoLite2-City.mmdb (если он есть)
+chmod 644 /var/db/geoip-database/GeoLite2-City.mmdb
+chown root:root /var/db/geoip-database/GeoLite2-City.mmdb
+
+# Права для папки xt_geoip
+chmod 755 /var/db/geoip-database/xt_geoip
+chown root:root /var/db/geoip-database/xt_geoip
+
+# Права для файлов внутри xt_geoip
+chmod 644 /var/db/geoip-database/xt_geoip/*
+chown root:root /var/db/geoip-database/xt_geoip/*
+
+# Права для самой папки geoip-database
+chmod 755 /var/db/geoip-database
+chown root:root /var/db/geoip-database
 
 # Обновляем файрвол
 echo "Обновляю файрвол..."
