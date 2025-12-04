@@ -44,6 +44,7 @@ curl -fsSL https://github.com/baf28/Synology-GeoIP-repaer-2025/raw/main/Synology
 ```text
 geoip-backup-20251203.tar.gz
 ├── geoip-database/
+│   ├── GeoLite2-City.mmdb
 │   ├── xt_geoip/
 │   │   ├── AD.iv4, AD.iv6  # Андорра (IPv4/IPv6)
 │   │   ├── AE.iv4, AE.iv6  # ОАЭ
