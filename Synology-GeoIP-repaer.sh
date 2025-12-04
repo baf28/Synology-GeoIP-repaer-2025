@@ -1,17 +1,23 @@
 #!/bin/bash
-# ОПАСНЫЙ СКРИПТ - НЕ РЕКОМЕНДУЕТСЯ К ИСПОЛЬЗОВАНИЮ
+# Скрипт создал Alexandr Linux site bafista.ru при помощи DeepSeek
+# curl -fsSL https://github.com/baf28/Synology-GeoIP-repaer-2025/raw/refs/heads/main/Synology-GeoIP-repaer.sh | bash
 
-echo "ВНИМАНИЕ: Этот скрипт перезаписывает системную базу GeoIP!"
-echo "Нажмите Ctrl+C для отмены или Enter для продолжения..."
-read
+# Проверка прав root
+if [ "$(id -u)" -ne 0 ]; then
+    echo "ОШИБКА: Скрипт должен запускаться из-под root!"
+    echo "Подключитесь к Synology по SSH как root и выполните команду снова."
+    exit 1
+fi
+
+echo "=== Замена базы GeoIP для Synology ==="
 
 # Создаем временную папку
 TEMP_DIR="/tmp/geoip_update_$(date +%s)"
 mkdir -p "$TEMP_DIR"
 cd "$TEMP_DIR"
 
-# Скачиваем архив (замените URL на ваш реальный)
-echo "Скачиваю архив с базой GeoIP..."
+# Скачиваем архив
+echo "Скачиваю архив..."
 wget -q "https://github.com/baf28/Synology-GeoIP-repaer-2025/raw/refs/heads/main/geoip-backup-20251203.tar.gz" -O geoip.tar.gz
 
 # Проверяем успешность скачивания
@@ -22,24 +28,20 @@ if [ ! -f "geoip.tar.gz" ]; then
 fi
 
 # Распаковываем
-echo "Распаковываю архив..."
+echo "Распаковываю..."
 tar -xzf geoip.tar.gz
 
-# Останавливаем файрвол для безопасности
-#echo "Останавливаю файрвол..."
-#/usr/syno/bin/synoservice --stop firewall
-
-# Копируем файлы (с созданием резервной копии)
-echo "Создаю резервную копию текущей базы..."
+# Резервная копия
+echo "Создаю резервную копию..."
 BACKUP_DIR="/var/db/geoip-database-backup-$(date +%Y%m%d)"
 cp -r /var/db/geoip-database "$BACKUP_DIR"
 
-echo "Копирую новые файлы..."
+# Копируем новые файлы
+echo "Копирую файлы..."
 cp -r "$TEMP_DIR"/geoip-database/* /var/db/geoip-database/
-cp "$TEMP_DIR"/GeoLite2-City.mmdb /var/db/geoip-database/ 2>/dev/null || true
 
-# Настраиваем права
-echo "Настраиваю права доступа..."
+# Права доступа
+echo "Настраиваю права..."
 chown -R root:root /var/db/geoip-database/
 chmod -R 755 /var/db/geoip-database/
 
@@ -47,13 +49,8 @@ chmod -R 755 /var/db/geoip-database/
 echo "Обновляю файрвол..."
 /usr/syno/bin/synofirewallUpdater --update
 
-# Запускаем файрвол
-#echo "Запускаю файрвол..."
-#/usr/syno/bin/synoservice --start firewall
-
 # Очистка
-echo "Очищаю временные файлы..."
 rm -rf "$TEMP_DIR"
 
-echo "Готово! Старая база сохранена в: $BACKUP_DIR"
-echo "Перезагрузите DSM или перезапустите файрвол для применения изменений."
+echo "Готово! Резервная копия: $BACKUP_DIR"
+echo "Перезагрузите DSM для применения изменений."
